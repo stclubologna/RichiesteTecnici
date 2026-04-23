@@ -2,22 +2,42 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Service - Prenotazione</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <nav class="bg-blue-700 text-white p-4 shadow-md mb-8">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <span class="font-bold text-xl uppercase tracking-widest">Service Manager</span>
-            <div class="space-x-6">
-                <a href="index.html" class="hover:underline font-bold border-b-2">Nuova Prenotazione</a>
-                <a href="dashboard.html" class="hover:underline">Dashboard</a>
+    <title>ST CLU BOLOGNA - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body class="min-h-screen">
+    <nav>
+        <div class="max-w-6xl mx-auto" style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0">
+            <span class="font-bold text-xl uppercase tracking-widest" style="color:var(--blue-700)">Service Manager</span>
+            <div style="display:flex;gap:1.5rem">
+                <a href="index.html" class="font-bold">Aggiungi Prenotazione</a>
+                <a href="dashboard.html">Storico Prenotazioni</a>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Registra Evento</h2>
+    <!-- Hero section above the card -->
+    <div class="max-w-2xl mx-auto" style="margin:1rem auto">
+        <div class="hero" id="heroCard">
+            <div class="hero-head">
+                <div class="hero-title">LUNGA VITA AGLI ST</div>
+                <div class="hero-meta">SDOFDM</div>
+                <button id="heroToggle" aria-expanded="false" aria-controls="heroBody" class="hero-toggle" title="Mostra informazioni">▾</button>
+            </div>
+            <div class="hero-body" id="heroBody" hidden>
+                <ul style="margin:0;padding-left:1rem;list-style:disc;color:var(--text);">
+                    <li><strong>Mail:</strong> stclubologna@gmail.com</li>
+                    <li><strong>Telefono:</strong> +39 351 478 8929</li>
+                    <li><strong>Magazzino ST:</strong> <a href="https://maps.app.goo.gl/Ywe4to5vhgHpYyC6A" target="_blank">Via Maurizio Padoa 1, Bologna</a></li>
+                    <li><strong>Magazzino SanDonato:</strong> <a href="https://maps.app.goo.gl/DSE8g1uX3zNq8tgD7" target="_blank">Via San Donato 1, Bologna</a></li>
+                    <li><strong>Targa Furgone:</strong> FF 602 PH</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-2xl mx-auto card rounded-lg p-8">
+        <h2 class="text-2xl font-bold mb-6" style="color:var(--blue-700);border-bottom:1px solid var(--card-border);padding-bottom:.5rem">Registra Evento</h2>
         <form id="eventoForm" class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -50,18 +70,28 @@
                 <div><label class="block text-sm font-bold">Fine</label><input type="date" id="rientro_materiale" class="w-full border p-2 rounded" required></div>
             </div>
             <div class="grid grid-cols-3 gap-2 border-t pt-4">
-                <div><label class="text-xs font-bold">Casse</label><input type="number" id="numero_casse" value="0" class="w-full border p-1 rounded"></div>
-                <div><label class="text-xs font-bold">Sagomatori</label><input type="number" id="sagomatori" value="0" class="w-full border p-1 rounded"></div>
-                <div><label class="text-xs font-bold">Furgone(gg)</label><input type="number" id="giorni_furgone" value="0" class="w-full border p-1 rounded"></div>
+                <div><label class="text-xs font-bold">Casse</label><input type="number" id="numero_casse" value="0" min="0" step="1" class="w-full border p-1 rounded"></div>
+                <div><label class="text-xs font-bold">Furgone(gg)</label><input type="number" id="giorni_furgone" value="0" min="0" step="1" class="w-full border p-1 rounded"></div>
+                <div>
+                    <label class="text-xs font-bold stack-label">Proiettore</label>
+                    <div class="checkbox-wrap"><input type="checkbox" id="proiettore"></div>
+                </div>
             </div>
             <div class="grid grid-cols-2 gap-2">
-                <div><label class="text-xs font-bold">Fresnel</label><input type="number" id="fresnel" value="0" class="w-full border p-1 rounded"></div>
-                <div><label class="text-xs font-bold">Teste Mobili</label><input type="number" id="teste_mobili" value="0" class="w-full border p-1 rounded"></div>
+                <div><label class="text-xs font-bold">Sagomatori</label><input type="number" id="sagomatori" value="0" min="0" step="1" class="w-full border p-1 rounded"></div>
+                <div><label class="text-xs font-bold">Fresnel</label><input type="number" id="fresnel" value="0" min="0" step="1" class="w-full border p-1 rounded"></div>
+                <div><label class="text-xs font-bold">Teste Mobili</label><input type="number" id="teste_mobili" value="0" min="0" step="1" class="w-full border p-1 rounded"></div>
+            </div>
+                <div class="border-t pt-4">
+                <label class="block text-sm font-bold mb-2 text-blue-700 uppercase">Note Materiale (Assistente Mixer)</label>
+                <textarea id="note_materiale" rows="3" 
+                        placeholder="Esempio: 4 XLR 10m, Mixer 12ch, 2 Di-Box..." 
+                        class="w-full border p-2 rounded bg-blue-50 border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
             </div>
             <div class="flex space-x-4 italic">
-                <label><input type="checkbox" id="proiettore"> Proiettore</label>
                 <label><input type="checkbox" id="clu"> Sconto CLU</label>
             </div>
+            <div id="formError" style="display:none;color:#b91c1c;margin-bottom:.5rem"></div>
             <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded font-bold hover:bg-blue-800 transition">INVIA PRENOTAZIONE</button>
         </form>
     </div>
@@ -71,40 +101,118 @@
 
         const updateID = () => {
             const f = document.getElementById('facolta').value;
-            const d = document.getElementById('consegna_materiale').value.replace(/-/g, '');
+            const dEl = document.getElementById('consegna_materiale');
+            const d = (dEl.value||"").replace(/-/g, '');
             if(f && d) document.getElementById('id_evento').value = `${f.toUpperCase()}-${d}-${Math.floor(1000+Math.random()*9000)}`;
         }
+
+        const consegnaEl = document.getElementById('consegna_materiale');
+        const rientroEl = document.getElementById('rientro_materiale');
         document.getElementById('facolta').addEventListener('change', updateID);
-        document.getElementById('consegna_materiale').addEventListener('change', updateID);
+        consegnaEl.addEventListener('change', () => {
+            updateID();
+            if(consegnaEl.value) rientroEl.min = consegnaEl.value; else rientroEl.removeAttribute('min');
+        });
+
+        const numericIds = ['numero_casse','sagomatori','fresnel','teste_mobili','giorni_furgone'];
+        numericIds.forEach(id => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            el.addEventListener('input', () => {
+                if(el.value === '') return;
+                const n = parseInt(el.value,10) || 0;
+                if(n < 0) el.value = 0;
+            });
+        });
 
         document.getElementById('eventoForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
+            const formError = document.getElementById('formError');
+            formError.style.display = 'none';
             btn.disabled = true; btn.innerText = "Invio...";
+
+            const consegna = consegnaEl.value;
+            const rientro = rientroEl.value;
+            if(!consegna || !rientro || new Date(consegna) > new Date(rientro)){
+                formError.textContent = "Errore: la data di rientro non può essere precedente alla data di consegna.";
+                formError.style.display = 'block';
+                btn.disabled = false; btn.innerText = "INVIA PRENOTAZIONE";
+                return;
+            }
+
+            for(const id of numericIds){
+                const v = parseInt(document.getElementById(id).value,10);
+                if(isNaN(v) || v < 0){
+                    formError.textContent = `Errore: il campo ${id} deve essere un numero maggiore o uguale a 0.`;
+                    formError.style.display = 'block';
+                    btn.disabled = false; btn.innerText = "INVIA PRENOTAZIONE";
+                    return;
+                }
+            }
+
             const payload = { payload: {
                 id_evento: document.getElementById('id_evento').value,
                 nome_evento: document.getElementById('nome_evento').value,
                 responsabile: document.getElementById('responsabile').value,
                 tecnico: document.getElementById('tecnico').value,
-                consegna_materiale: document.getElementById('consegna_materiale').value,
-                rientro_materiale: document.getElementById('rientro_materiale').value,
-                numero_casse: parseInt(document.getElementById('numero_casse').value)||0,
-                sagomatori: parseInt(document.getElementById('sagomatori').value)||0,
-                fresnel: parseInt(document.getElementById('fresnel').value)||0,
-                teste_mobili: parseInt(document.getElementById('teste_mobili').value)||0,
-                giorni_furgone: parseInt(document.getElementById('giorni_furgone').value)||0,
+                consegna_materiale: consegna,
+                rientro_materiale: rientro,
+                numero_casse: parseInt(document.getElementById('numero_casse').value,10)||0,
+                sagomatori: parseInt(document.getElementById('sagomatori').value,10)||0,
+                fresnel: parseInt(document.getElementById('fresnel').value,10)||0,
+                teste_mobili: parseInt(document.getElementById('teste_mobili').value,10)||0,
+                giorni_furgone: parseInt(document.getElementById('giorni_furgone').value,10)||0,
                 proiettore: document.getElementById('proiettore').checked,
                 clu: document.getElementById('clu').checked,
-                facolta: document.getElementById('facolta').value
+                facolta: document.getElementById('facolta').value,
+                note_materiale: document.getElementById('note_materiale').value // Deve chiamarsi così
             }};
 
-            fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-            .then(() => {
+            try{
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
                 alert("Evento Registrato!");
                 e.target.reset(); document.getElementById('id_evento').value="";
+            }catch(err){
+                formError.textContent = 'Errore durante l\'invio. Riprova.';
+                formError.style.display = 'block';
+            }finally{
                 btn.disabled = false; btn.innerText = "INVIA PRENOTAZIONE";
-            });
+            }
         });
+
+        // Update local time in info card
+        const timeEl = document.getElementById('localTime');
+        function updateTime(){
+            const d = new Date();
+            timeEl.textContent = d.toLocaleTimeString();
+        }
+        if(timeEl) setInterval(updateTime,1000);
+        // Hero toggle behaviour
+        const heroToggle = document.getElementById('heroToggle');
+        const heroBody = document.getElementById('heroBody');
+        const heroEl = document.getElementById('heroCard');
+        if(heroToggle && heroEl){
+            heroToggle.addEventListener('click', ()=>{
+                const expanded = heroToggle.getAttribute('aria-expanded') === 'true';
+                heroToggle.setAttribute('aria-expanded', String(!expanded));
+                if(!expanded){
+                    // opening: unhide then add class to animate
+                    heroBody.hidden = false;
+                    requestAnimationFrame(()=> heroEl.classList.add('open'));
+                }else{
+                    // closing: remove class to animate, then hide after transition
+                    heroEl.classList.remove('open');
+                    const onEnd = (ev)=>{
+                        if(ev.propertyName === 'max-height'){
+                            heroBody.hidden = true;
+                            heroBody.removeEventListener('transitionend', onEnd);
+                        }
+                    };
+                    heroBody.addEventListener('transitionend', onEnd);
+                }
+            });
+        }
     </script>
 </body>
 </html>

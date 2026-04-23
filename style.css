@@ -1,0 +1,195 @@
+:root{
+  --blue-700:#2563eb;
+  --blue-900:#1e40af;
+  --bg:#f8fafc;
+  --panel:#ffffff;
+  --text:#0f1724;
+  --muted:#6b7280;
+  --card-border:rgba(15,23,36,0.06);
+}
+
+
+/* Base */
+html,body{box-sizing:border-box;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";}
+*,*::before,*::after{box-sizing:inherit}
+
+/* Dark theme core */
+body{background:var(--slate-900);color:#e6eef8;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--blue-700)}
+a:hover{opacity:0.9}
+
+/* Typography */
+  html{font-size:17px}
+  body{line-height:1.7;font-size:1rem}
+h1,h2,h3,h4{line-height:1.2;margin:0 0 .5rem;font-weight:700}
+h1{font-size:1.8rem}
+h2{font-size:1.5rem}
+h3{font-size:1.125rem}
+p,li,label{color:var(--text)}
+
+/* Improve container readability */
+.max-w-6xl,.max-w-4xl,.max-w-2xl{padding-left:1rem;padding-right:1rem}
+
+/* Cards improvements */
+.card{background:linear-gradient(180deg, rgba(31,41,55,0.9), rgba(20,24,31,0.85));border:1px solid rgba(255,255,255,0.04);padding:1.5rem;border-radius:1rem;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+.card p{color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--card-border);padding:1.25rem;border-radius:1rem;box-shadow:0 8px 20px rgba(2,6,23,0.06)}
+.card p{color:var(--muted)}
+
+/* Forms tweaks */
+  /* Form controls: ensure high contrast and readable backgrounds */
+  input[type=text], input[type=date], input[type=number], select, textarea{background:var(--panel);border:1px solid var(--card-border);padding:.7rem .85rem;border-radius:.6rem;color:var(--text);box-shadow:none}
+  input,select,textarea{font-size:1rem}
+  label{font-size:0.95rem;color:var(--muted);font-weight:700}
+  textarea{min-height:100px}
+  input::placeholder, textarea::placeholder{color:var(--muted)}
+
+  /* Override low-contrast Tailwind utility leftovers */
+  .bg-blue-50{background:var(--panel) !important;color:var(--text) !important}
+  .bg-gray-50{background:var(--panel) !important;color:var(--text) !important}
+  .border-blue-200{border-color:var(--card-border) !important}
+
+/* Buttons */
+.btn{padding:.75rem 1.1rem;border-radius:.75rem;font-weight:700;letter-spacing:.2px}
+.btn{display:inline-block;padding:.6rem .95rem;border-radius:.6rem;font-weight:700;letter-spacing:.2px;background:var(--blue-700);color:#fff;border:none}
+.btn.secondary{background:transparent;color:var(--blue-700);border:1px solid rgba(37,99,235,0.08)}
+.btn-danger{background:#ef4444;color:#fff;border:none}
+
+/* Accessibility */
+:focus{outline:none}
+input:focus,select:focus,textarea:focus,.btn:focus{box-shadow:0 0 0 4px rgba(59,130,246,0.14)}
+input:focus,select:focus,textarea:focus,.btn:focus{box-shadow:0 0 0 4px rgba(37,99,235,0.12)}
+
+/* Grid and spacing */
+#grigliaEventi{display:grid;grid-template-columns:repeat(1,1fr);gap:1.5rem}
+#grigliaEventi{display:grid;grid-template-columns:repeat(1,1fr);gap:1.25rem}
+@media(min-width:768px){#grigliaEventi{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){#grigliaEventi{grid-template-columns:repeat(3,1fr)}}
+
+/* Small utilities */
+.muted{color:var(--muted)}
+.kbd{font-family:monospace;background:rgba(255,255,255,0.02);padding:2px 6px;border-radius:6px;font-size:.85rem}
+
+/* Make nav links clearer */
+nav .active, nav a.font-bold{color:var(--blue-400)}
+
+/* Small helpers */
+.italic{font-style:italic}
+.loading{padding:3rem 0;text-align:center;color:var(--muted);font-style:italic}
+
+/* Force readable colors for utility text classes left from Tailwind */
+.text-gray-400, .text-gray-300, .text-slate-300, .text-slate-400, .text-muted, .text-xs, .text-sm {
+  color:var(--text) !important;
+}
+
+/* Ensure buttons keep white text on dark backgrounds */
+.btn, button, .btn * { color: inherit !important; }
+
+/* Align checkbox in 3-column numeric grid */
+.grid.grid-cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;align-items:center}
+.grid.grid-cols-3 label{display:flex;align-items:center;gap:0.5rem;font-weight:600;color:var(--text);font-size:.95rem}
+.grid.grid-cols-3 input[type=checkbox]{width:1rem;height:1rem}
+
+/* Stack label/checkbox when requested */
+.stack-label{display:block;margin-bottom:.35rem}
+.checkbox-wrap{margin-top:.15rem}
+.checkbox-wrap input[type=checkbox]{width:1.1rem;height:1.1rem}
+
+a{color:var(--blue-700)}
+a:hover{opacity:0.95}
+
+/* Layout helpers */
+.max-w-6xl{max-width:72rem;margin-left:auto;margin-right:auto}
+.max-w-4xl{max-width:56rem;margin-left:auto;margin-right:auto}
+.max-w-2xl{max-width:40rem;margin-left:auto;margin-right:auto}
+.p-4{padding:1rem}
+.p-8{padding:2rem}
+.mb-6{margin-bottom:1.5rem}
+.mb-8{margin-bottom:2rem}
+/* Common utilities used in templates */
+.border-t{border-top:1px solid var(--card-border)}
+.pt-4{padding-top:1rem}
+.gap-4{gap:1rem}
+.gap-2{gap:.5rem}
+.space-x-4 > * + *{margin-left:1rem}
+.space-x-6 > * + *{margin-left:1.5rem}
+.grid{display:grid}
+.grid.grid-cols-2{grid-template-columns:repeat(2,1fr)}
+.grid.grid-cols-3{grid-template-columns:repeat(3,1fr)}
+
+/* Navigation */
+nav{background:var(--blue-900);color:#fff;padding:1rem;box-shadow:0 2px 6px rgba(2,6,23,0.6)}
+nav a{color:inherit;text-decoration:none}
+nav a:hover{opacity:0.9}
+
+/* Cards */
+.card{background:var(--slate-800);border:1px solid rgba(255,255,255,0.04);padding:1.25rem;border-radius:1rem;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+.card h3{margin:0 0 .25rem 0}
+
+/* Forms */
+input[type=text], input[type=date], input[type=number], select, textarea{width:100%;border:1px solid var(--card-border);background:var(--panel);color:var(--text);padding:.5rem .75rem;border-radius:.6rem}
+select{appearance:auto}
+input::placeholder, textarea::placeholder{color:var(--muted)}
+input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(59,130,246,0.18);border-color:rgba(59,130,246,0.6)}
+
+.btn{display:inline-block;padding:.6rem 1rem;border-radius:.6rem;background:var(--blue-700);color:#fff;border:none;cursor:pointer}
+.btn:hover{background:var(--blue-900)}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
+.btn-danger{background:transparent;color:#f87171;border:1px solid rgba(248,113,113,0.18)}
+
+/* Utility */
+.rounded-lg{border-radius:.8rem}
+.rounded-xl{border-radius:1rem}
+.text-muted{color:var(--muted)}
+
+/* Small responsive grid fallback for cards container */
+#grigliaEventi{display:grid;grid-template-columns:repeat(1,1fr);gap:1.25rem}
+@media(min-width:768px){#grigliaEventi{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){#grigliaEventi{grid-template-columns:repeat(3,1fr)}}
+
+/* Minor helpers to keep parity with existing layout */
+.shadow-md{box-shadow:0 4px 8px rgba(2,6,23,0.35)}
+.uppercase{text-transform:uppercase}
+
+/* Small tweaks to match original visuals */
+  .text-blue-400{color:#2563eb}
+  .text-slate-400{color:#475569}
+  .text-slate-300{color:#6b7280}
+
+  /* Badges and prices */
+  .id-badge{display:inline-block;font-family:monospace;background:#e6f0ff;color:var(--blue-900);padding:.25rem .5rem;border-radius:.5rem;font-size:.85rem;border:1px solid rgba(37,64,128,0.06)}
+  .price{color:#166534;font-weight:800}
+  .ev-title{font-size:1.125rem;margin:0 0 .25rem 0;color:var(--text)}
+  .ev-meta{color:var(--muted);font-size:.95rem;margin-bottom:.6rem}
+  .ev-small{color:#475569;font-size:.95rem}
+
+  /* Hero card */
+  .hero{background:linear-gradient(90deg,#eef2ff,#ffffff);border:1px solid var(--card-border);padding:1.6rem 1.85rem;border-radius:1.15rem;display:block;box-shadow:0 8px 30px rgba(2,6,23,0.06)}
+  .hero-head{display:flex;align-items:center;gap:1.5rem}
+  .hero-title{font-size:2rem;font-weight:900;color:var(--blue-900);flex:1}
+  .hero-meta{font-size:1rem;color:var(--muted);text-transform:uppercase}
+  .hero-toggle{background:transparent;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted)}
+  .hero-toggle[aria-expanded="true"]{transform:rotate(180deg);color:var(--blue-700)}
+  .hero-body{margin-top:1rem;padding-top:.6rem;border-top:1px dashed var(--card-border)}
+  /* Smooth expand/collapse */
+  .hero-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .36s cubic-bezier(.2,.9,.2,1),opacity .28s ease,padding-top .18s ease;padding-top:0;border-top:0}
+  .hero.open .hero-body{max-height:600px;opacity:1;padding-top:.6rem;border-top:1px dashed var(--card-border)}
+  .hero-toggle{transition:transform .25s ease}
+  .hero.open .hero-toggle{transform:rotate(180deg)}
+/* Event card specifics */
+.id-badge{display:inline-block;font-family:monospace;background:rgba(30,58,138,0.16);color:var(--blue-400);padding:.25rem .5rem;border-radius:.5rem;font-size:.75rem}
+.price{color:#86efac;font-weight:700}
+.ev-title{font-size:1.125rem;margin:0 0 .25rem 0}
+.ev-meta{color:var(--muted);font-size:.95rem;margin-bottom:.6rem}
+.ev-small{color:#9aa6b8;font-size:.9rem}
+
+/* Search row */
+.search-row{display:flex;gap:0.75rem;margin-bottom:1.5rem}
+.form-control{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:.85rem 1rem;border-radius:.9rem;color:inherit}
+.icon-btn{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);padding:.6rem 0.9rem;border-radius:.75rem;cursor:pointer}
+
+/* Card hover */
+.card:hover{transform:translateY(-4px);transition:transform .18s ease,box-shadow .18s ease}
+
+

@@ -2,75 +2,109 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Service - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Service - Storico Ordini</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-900 text-white">
-    <nav class="bg-blue-900 text-white p-4 shadow-md mb-8">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <span class="font-bold text-xl uppercase tracking-widest">Service Manager</span>
-            <div class="space-x-6">
-                <a href="index.html" class="hover:underline">Nuova Prenotazione</a>
-                <a href="dashboard.html" class="hover:underline font-bold border-b-2">Dashboard</a>
+<body class="min-h-screen">
+    <nav>
+        <div class="max-w-6xl mx-auto flex justify-between items-center" style="display:flex;justify-content:space-between;align-items:center">
+            <span class="font-bold text-xl uppercase tracking-widest" style="color:var(--blue-700)">Service Control</span>
+            <div style="display:flex;gap:1rem">
+                <a href="index.html">Nuova Prenotazione</a>
+                <a href="dashboard.html" class="font-bold">Storico</a>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto p-6 bg-slate-800 rounded-xl shadow-2xl border border-slate-700">
-        <h2 class="text-2xl font-bold mb-6 text-blue-400">Visualizza Dettagli Evento</h2>
-        
-        <div class="flex gap-4 mb-10">
-            <select id="menu_id" class="flex-1 bg-slate-700 border border-slate-600 p-3 rounded-lg text-white outline-none">
-                <option value="">Caricamento ID disponibili...</option>
-            </select>
-            <button onclick="caricaEvento()" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-bold">Visualizza</button>
+    <div class="max-w-6xl mx-auto p-4">
+        <div class="search-row">
+            <input type="text" id="ricercaEvento" onkeyup="filtraEventi()" 
+                   placeholder="Cerca per nome evento o responsabile..." 
+                   class="form-control">
+            <button onclick="caricaStorico()" class="icon-btn" title="Ricarica storico">🔄</button>
         </div>
 
-        <div id="risultato" class="hidden animate-fade-in bg-slate-700 p-6 rounded-lg">
-            <div class="grid grid-cols-2 gap-8">
-                <div><p class="text-xs text-slate-400 uppercase">Responsabile</p><p id="v_resp" class="text-xl font-bold"></p></div>
-                <div><p class="text-xs text-slate-400 uppercase">Totale</p><p id="v_tot" class="text-2xl font-black text-green-400"></p></div>
-                <div><p class="text-xs text-slate-400 uppercase">Consegna</p><p id="v_cons" class="text-lg"></p></div>
-                <div><p class="text-xs text-slate-400 uppercase">Rientro</p><p id="v_rien" class="text-lg"></p></div>
-            </div>
-            <div class="mt-6 pt-6 border-t border-slate-600">
-                <p class="text-xs text-slate-400 uppercase mb-2">Materiale Dettaglio</p>
-                <p id="v_mat" class="italic text-slate-300 bg-slate-800 p-3 rounded"></p>
-            </div>
+        <div id="loading" class="loading">Caricamento storico...</div>
+        <div id="grigliaEventi">
         </div>
     </div>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxg7wupK_fuC8uCjKoWNBlFlhxpvxhTXwG1cbQPurD8guNawu89_ZF6FeNOx2_o9kE_/exec";
+        let tuttiGliEventi = [];
 
-        // Carica la lista ID al caricamento della pagina
-        window.onload = async () => {
-            const menu = document.getElementById('menu_id');
+        async function caricaStorico() {
+            const griglia = document.getElementById('grigliaEventi');
+            const loading = document.getElementById('loading');
+            loading.classList.remove('hidden');
+            griglia.innerHTML = "";
+
             try {
-                const res = await fetch(`${API_URL}?getlist=ids`);
-                const ids = await res.json();
-                menu.innerHTML = '<option value="">-- Seleziona un ID --</option>';
-                ids.forEach(id => {
-                    if(id) menu.innerHTML += `<option value="${id}">${id}</option>`;
-                });
-            } catch (e) { menu.innerHTML = '<option>Errore caricamento</option>'; }
-        };
-
-        async function caricaEvento() {
-            const id = document.getElementById('menu_id').value;
-            if(!id) return;
-            const res = await fetch(`${API_URL}?id=${id}`);
-            const json = await res.json();
-            if(json.status === "success") {
-                const d = json.data;
-                document.getElementById('v_resp').innerText = d.responsabile;
-                document.getElementById('v_tot').innerText = "€ " + d.totale.toFixed(2);
-                document.getElementById('v_cons').innerText = new Date(d.consegna_materiale).toLocaleDateString();
-                document.getElementById('v_rien').innerText = new Date(d.rientro_materiale).toLocaleDateString();
-                document.getElementById('v_mat').innerText = d.dettaglio_materiale || "Nessun dettaglio";
-                document.getElementById('risultato').classList.remove('hidden');
+                const res = await fetch(API_URL);
+                tuttiGliEventi = await res.json();
+                renderizzaEventi(tuttiGliEventi);
+            } catch (e) {
+                alert("Errore nel caricamento dei dati");
+            } finally {
+                loading.classList.add('hidden');
             }
         }
+
+        function renderizzaEventi(eventi) {
+            const griglia = document.getElementById('grigliaEventi');
+            griglia.innerHTML = eventi.map(ev => `
+                <div class="card">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem">
+                            <span class="id-badge">${ev.id_evento}</span>
+                            <span class="price">€${ev.totale ? ev.totale.toFixed(2) : '0'}</span>
+                        </div>
+                        <h3 class="ev-title">${ev.nome_evento}</h3>
+                        <p class="ev-meta">Resp: ${ev.responsabile} | Facoltà: ${ev.facolta}</p>
+                        <div class="ev-small" style="margin-bottom:1rem">
+                            <p>📅 Consegna: ${new Date(ev.consegna_materiale).toLocaleDateString()}</p>
+                            <p>📅 Rientro: ${new Date(ev.rientro_materiale).toLocaleDateString()}</p>
+                            <p>📦 Materiale: <span class="italic text-slate-300">${ev.dettaglio_materiale || 'Nessuna nota'}</span></p>
+                        </div>
+                    </div>
+                    <button onclick="eliminaEvento('${ev.id_evento}')" class="btn btn-danger" style="width:100%">ELIMINA ORDINE</button>
+                </div>
+            `).join('');
+        }
+
+/*        function renderizzaEventi(eventi) {
+    console.log("Dati ricevuti:", eventi[0]); // Questo ti permette di vedere i nomi dei campi nella console F12
+    const griglia = document.getElementById('grigliaEventi');
+    griglia.innerHTML = eventi.map(ev => `
+        <div class="bg-slate-800 ...">
+            <p>📦 Debug: <span class="text-xs text-red-400">${JSON.stringify(ev)}</span></p>
+        </div>
+    `).join('');
+}
+*/
+        function filtraEventi() {
+            const query = document.getElementById('ricercaEvento').value.toLowerCase();
+            const filtrati = tuttiGliEventi.filter(ev => 
+                ev.nome_evento.toLowerCase().includes(query) || 
+                ev.responsabile.toLowerCase().includes(query)
+            );
+            renderizzaEventi(filtrati);
+        }
+
+        async function eliminaEvento(id) {
+            if(!confirm(`Sei sicuro di voler eliminare l'evento ${id}?`)) return;
+            
+            try {
+                await fetch(`${API_URL}?deleteId=${id}`);
+                alert("Evento eliminato correttamente dal foglio!");
+                caricaStorico(); // Ricarica la lista
+            } catch (e) {
+                alert("Errore durante l'eliminazione");
+            }
+        }
+
+        // Carica all'avvio
+        window.onload = caricaStorico;
     </script>
 </body>
 </html>
