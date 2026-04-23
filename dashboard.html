@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Service - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white">
+    <nav class="bg-blue-900 text-white p-4 shadow-md mb-8">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <span class="font-bold text-xl uppercase tracking-widest">Service Manager</span>
+            <div class="space-x-6">
+                <a href="index.html" class="hover:underline">Nuova Prenotazione</a>
+                <a href="dashboard.html" class="hover:underline font-bold border-b-2">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto p-6 bg-slate-800 rounded-xl shadow-2xl border border-slate-700">
+        <h2 class="text-2xl font-bold mb-6 text-blue-400">Visualizza Dettagli Evento</h2>
+        
+        <div class="flex gap-4 mb-10">
+            <select id="menu_id" class="flex-1 bg-slate-700 border border-slate-600 p-3 rounded-lg text-white outline-none">
+                <option value="">Caricamento ID disponibili...</option>
+            </select>
+            <button onclick="caricaEvento()" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-bold">Visualizza</button>
+        </div>
+
+        <div id="risultato" class="hidden animate-fade-in bg-slate-700 p-6 rounded-lg">
+            <div class="grid grid-cols-2 gap-8">
+                <div><p class="text-xs text-slate-400 uppercase">Responsabile</p><p id="v_resp" class="text-xl font-bold"></p></div>
+                <div><p class="text-xs text-slate-400 uppercase">Totale</p><p id="v_tot" class="text-2xl font-black text-green-400"></p></div>
+                <div><p class="text-xs text-slate-400 uppercase">Consegna</p><p id="v_cons" class="text-lg"></p></div>
+                <div><p class="text-xs text-slate-400 uppercase">Rientro</p><p id="v_rien" class="text-lg"></p></div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-600">
+                <p class="text-xs text-slate-400 uppercase mb-2">Materiale Dettaglio</p>
+                <p id="v_mat" class="italic text-slate-300 bg-slate-800 p-3 rounded"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxg7wupK_fuC8uCjKoWNBlFlhxpvxhTXwG1cbQPurD8guNawu89_ZF6FeNOx2_o9kE_/exec";
+
+        // Carica la lista ID al caricamento della pagina
+        window.onload = async () => {
+            const menu = document.getElementById('menu_id');
+            try {
+                const res = await fetch(`${API_URL}?getlist=ids`);
+                const ids = await res.json();
+                menu.innerHTML = '<option value="">-- Seleziona un ID --</option>';
+                ids.forEach(id => {
+                    if(id) menu.innerHTML += `<option value="${id}">${id}</option>`;
+                });
+            } catch (e) { menu.innerHTML = '<option>Errore caricamento</option>'; }
+        };
+
+        async function caricaEvento() {
+            const id = document.getElementById('menu_id').value;
+            if(!id) return;
+            const res = await fetch(`${API_URL}?id=${id}`);
+            const json = await res.json();
+            if(json.status === "success") {
+                const d = json.data;
+                document.getElementById('v_resp').innerText = d.responsabile;
+                document.getElementById('v_tot').innerText = "€ " + d.totale.toFixed(2);
+                document.getElementById('v_cons').innerText = new Date(d.consegna_materiale).toLocaleDateString();
+                document.getElementById('v_rien').innerText = new Date(d.rientro_materiale).toLocaleDateString();
+                document.getElementById('v_mat').innerText = d.dettaglio_materiale || "Nessun dettaglio";
+                document.getElementById('risultato').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
